@@ -148,8 +148,10 @@ class Juego {
 
                     jugadores[i].Mirilla = mira;
                     condicion = false;
+                }else{
+                    System.out.println(" Todos los jugadores estan muertos ");
                 }
-                System.out.println(" La posiciion de las balas del "+jugadores[i].name+" es: "+jugadores[i].Arma.toString());
+                System.out.println(" La posicion de las balas del "+jugadores[i].name+" es: "+jugadores[i].Arma.toString());
             }
 
         }
