@@ -13,7 +13,6 @@ class Revolver {
         this.idJugador = idJugador;
         posicionBalaActual = aleatorio(1, 6);
         posicionBala = aleatorio(1, 6);
-        System.out.println("Armado " + idJugador);
     }
 
     public boolean disparar() {
@@ -58,13 +57,13 @@ class Jugador {
         this.Arma = new Revolver(id);
         this.vivo = true;
     }
-
-    public void accionarRevolver(Revolver r) {
-        if (r.disparar()) {
+/* 
+    public void accionarRevolver(Revolver Arma) {
+        if (Arma.disparar()) {
             this.vivo = false;
             System.out.println("El jugador de Nombre: " + name + " ha muerto");
         }
-    }
+    } */
 
     /* Esto no es necesario si no declaras la variables name como privado */
 
@@ -98,11 +97,21 @@ class Juego {
     String nombre = "Jugador ";
     Revolver pistola;
     Integer mira;
+    int terminar_juego = 0;
+    Scanner terminado_del_juego = new Scanner(System.in);
 
     public Juego(int numJugadores) {
         jugadores = new Jugador[numJugadores];
         crearJugadores();
-        apuntar();
+        while (terminar_juego != 1) {
+            
+            apuntar();
+            masacre();
+            Analizador_de_jugadores();
+            System.out.println(" Para terminar el juego presione 1 si no presione cualquier otro numero ");
+            terminar_juego = terminado_del_juego.nextInt();
+        }
+
         /*
          * revolver = new Revolver[numJugadores];
          * crearRevolver();
@@ -111,39 +120,64 @@ class Juego {
 
     public void crearJugadores() {
         for (int i = 0; i < jugadores.length; i++) {
-            nombre = nombre + i; // Esto es provicional para mistras no esta la carga de nombres por el archivo
-                                 // .txt
+            nombre = nombre + i; // Esto es provicional para mistras no esta la carga de nombres por el archivo .txt
             jugadores[i] = new Jugador(i, nombre, pistola);
-            if (i != jugadores.length) { // Esto es provicional para mistras no esta la carga de nombres por el archivo
-                                         // .txt
-                nombre = "Jugador ";
+            if (i != jugadores.length) { // Esto es provicional para mistras no esta la carga de nombres por el archivo .txt
+                nombre = "Jugador del id  ";
             } else {
-                nombre = "Jugador " + i;
+                nombre = "Jugador del id " + i;
             }
             System.out.println(jugadores[i].name); // Esto es para verificar si esta Guardando el nombre de los
-            System.out.println(jugadores[i].Arma.toString());
+            
 
         }
     }
 
     public void apuntar() {
+        System.out.println(" "); // Espaciador 
         for (int i = 0; i < jugadores.length; i++) {
             boolean condicion = true;
             jugadores[i].Mirilla = -1;
-            System.out.println("Esta es la iteracion "+i);
+            
 
             while (condicion) {
 
                 mira = aleatorio(0, jugadores.length-1);
                 if (jugadores[mira].isVivo()) {
                     System.out.println("El jugador "+jugadores[i].name+" Esta apuntando a: " + jugadores[mira].name);
+
                     jugadores[i].Mirilla = mira;
                     condicion = false;
-                    System.out.println("Esta es el Bucle "+i);
                 }
+                System.out.println(" La posiciion de las balas del "+jugadores[i].name+" es: "+jugadores[i].Arma.toString());
             }
+
         }
 
+    }
+
+    public void masacre(){
+        int disparador;
+        System.out.println(" "); // Espaciador 
+        for (int i = 0; i < jugadores.length; i++) {
+            disparador = jugadores[i].Mirilla;
+            if (jugadores[i].Arma.disparar()) {
+                jugadores[disparador].vivo = false;
+                System.out.println(" El jugador: "+jugadores[disparador].name+" Esta Muerto ");
+            }
+        }
+    }
+
+    public void Analizador_de_jugadores(){
+        System.out.println(" "); // Espaciador 
+        for (int i = 0; i < jugadores.length; i++){
+            if (jugadores[i].vivo) {
+                System.out.println("El jugador de nombre "+jugadores[i].name+" esta vivo ");
+            }else {
+                System.out.println("El jugador de nombre "+jugadores[i].name+" esta Muerto ");
+            }
+
+        }
     }
 
     public int aleatorio(int minimo, int maximo) {
