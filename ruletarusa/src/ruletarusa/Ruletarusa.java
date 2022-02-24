@@ -1,8 +1,18 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
 package ruletarusa;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.util.Scanner;
 class Revolver {
 
     int idJugador;
@@ -186,25 +196,77 @@ class Juego {
         int num = (int) Math.floor(Math.random() * (maximo - minimo + 1) + (minimo));
         return num;
     }
+}
+    class nodo{
+    String nombre;
+    nodo siguiente;
+    nodo(String nom){
+        this.nombre=nom;       
+    }
+}
+class lista{
+    nodo L;
+    lista(){
+        L = null;
+    }
+    void crear(String Nombre) {
+        if (L==null) {
+            L=new nodo(Nombre);
+        }else{
+            nodo aux = L;
+            while (aux.siguiente != null)
+                aux=aux.siguiente;
+            aux.siguiente = new nodo(Nombre);
+        }
+    }
+}
 
+class archivo
+{
+    PrintWriter pf;
+    FileReader fr;
+    
+    void crear(String pNombre,String pDatos) throws IOException
+    {
+        pf=new PrintWriter(new FileWriter(pNombre, true));
+        pf.println(pDatos);
+        pf.close();
+        System.out.println("Generacion ok");
+        
+    }
+void leer(String pnombre,lista lis) throws IOException{
+    FileReader fr=new FileReader(pnombre);
+        BufferedReader br=new BufferedReader(fr);
+        String linea=br.readLine();
+       
+        while ((linea=br.readLine())!=null)
+        {
+            String datos;
+            datos=("/r");
+            String nombre = datos;
+            lis.crear(nombre);
+    }
+}
 }
 
 public class Ruletarusa {
 
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+       
         Scanner sc = new Scanner(System.in);
-
+        archivo ar= new archivo();
         System.out.println("num jugadores: ");
         int x = sc.nextInt();
         Juego a = new Juego(x);
+        for(int k=0;k<x;k++){
+         if(!a.jugadores[k].isVivo()){
+    ar.crear("C:\\Users\\Usuario\\derrotados.out", a.jugadores[k].name );
+            }else {
+             ar.crear("C:\\Users\\Usuario\\ganador.out", a.jugadores[k].name );
+         }
+}        
+                
         System.out.println("juego terminado ");
-        /*
-         * a.rondas();
-         */
-
-        System.out.println("juego terminado");
-
-    }
-
+        
+}
 }
